@@ -1,13 +1,59 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <el-container style="height: 100vh; border: 1px solid #eee">
+      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <el-menu :default-openeds="['0']">
+          <router-link to="/"><el-menu-item index="1-1">Home</el-menu-item></router-link>
+          <el-submenu index="1">
+            <template slot="title"><i class="el-icon-message"></i>Clients</template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">Create new client</el-menu-item>
+              <router-link to="/view-clients"><el-menu-item index="1-2">View all clients</el-menu-item></router-link>
+              <el-menu-item index="1-2">Add a pet</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title"><i class="el-icon-menu"></i>Visits</template>
+            <el-menu-item-group>
+              <el-menu-item index="2-1">Create a visit</el-menu-item>
+              <el-menu-item index="2-2">View all visits</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+
+      <el-container>
+        <h1>PET-O-MATIC</h1>
+        <el-header style="text-align: right; font-size: 12px">
+          <el-dropdown>
+            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>View</el-dropdown-item>
+              <el-dropdown-item>Add</el-dropdown-item>
+              <el-dropdown-item>Delete</el-dropdown-item>
+              <el-dropdown-item @click="logout">Log out</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <span>Todays View</span>
+        </el-header>
+        <router-view></router-view>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
+const axios = require('axios')
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    logout () {
+      axios.post('http://localhost:8080/staff/logout')
+        .then((response) => {
+          console.log(response)
+        })
+    }
+  }
 }
 </script>
 
@@ -16,8 +62,13 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+}
+h1{
+  text-align: center;
+}
+tr:nth-of-type(odd) {
+  background: lightgray;
 }
 </style>

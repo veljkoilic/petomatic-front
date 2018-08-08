@@ -1,14 +1,20 @@
 <template>
   <div>
+    <el-row>
+      <el-button @click="saveChanges" type="success">Save changes</el-button>
+      <el-col :span="10">
+        <h5>{{clients.client_name + " " + clients.client_lastname}}</h5>
+          <el-button type="button" @click="editName">Edit name</el-button>
+          <el-button type="button" @click="editLastName">Edit lastname</el-button>
+      </el-col>
+    </el-row>
+    <el-row>
       <el-row>
         <el-col :span="6">
           <img :src="clients.client_photo" alt="">
         </el-col>
-        <el-col :span="10">
-          <h5>{{clients.client_name + " " + clients.client_lastname}}</h5>
-        </el-col>
       </el-row>
-    <el-row>
+      <h3>Pets:</h3>
       <el-col :span="8" v-for="pet in pets" :key="pet.id" :offset="2">
         <el-card :body-style="{ padding: '0px' }">
           <img :src="pet.pet_photo" class="image">
@@ -74,15 +80,53 @@ export default {
     return {
       clients: [],
       pets: [],
-      currentDate: new Date()
+      newClient: {}
     }
   },
   methods: {
-    handleEdit (index, row) {
-      console.log(index, row)
+    editName () {
+      this.$prompt('Please input clients name', 'Name', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        inputPattern: '',
+        inputErrorMessage: 'Invalid Email'
+      }).then(value => {
+        this.newClient.client_name = value.value
+        this.$message({
+          type: 'success',
+          message: 'Clients name is now:' + value.value
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Input canceled'
+        })
+      })
     },
-    handleDelete (index, row) {
-      console.log(index, row)
+    editLastName () {
+      this.$prompt('Please input clients lastname', 'Lastname', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        inputPattern: '',
+        inputErrorMessage: 'Invalid Email'
+      }).then(value => {
+        this.newClient.client_name = value.value
+        this.$message({
+          type: 'success',
+          message: 'Clients lastname is now:' + value.value
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Input canceled'
+        })
+      })
+    },
+    saveChanges () {
+      axios.post('http://localhost:8080/clients/' + this.$route.params.clientId, this.newClient)
+        .then((response) => {
+          console.log(response.data)
+        })
     }
   },
   mounted () {
@@ -90,6 +134,7 @@ export default {
       .then((response) => {
         console.log(response.data)
         this.clients = response.data
+        this.newClient = response.data
       })
     axios.get('http://localhost:8080/client/pets/' + this.$route.params.clientId)
       .then((response) => {

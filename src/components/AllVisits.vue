@@ -1,49 +1,41 @@
 <template>
-  <el-table
-    :data="clients"
-    style="width: 100%">
-    <el-table-column
-      label="Client ID"
-      width="180">
-      <template slot-scope="scope">
-        <i class="el-icon-time"></i>
-        <span style="margin-left: 10px">{{ scope.row.id }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="Name"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>Name: {{ scope.row.client_name }}</p>
-          <p>Lastname: {{ scope.row.client_lastname }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.client_name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="Operations">
-      <template slot-scope="scope">
-        <router-link :to="'/view-client/'+ scope.row.id">
-        <el-button
-          size="mini"
-          type="success"
-          @click="handleDelete(scope.$index, scope.row)">View</el-button></router-link>
-        <router-link :to="'/edit-client/'+ scope.row.id">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">Edit</el-button></router-link>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <div>
+    <el-main>
+      <el-table
+        :data="visits"
+        style="width: 100%">
+        <el-table-column type="expand">
+          <template v-for="visit in visits" slot-scope="props" >
+            <div v-bind:key="visit.id">
+              <p>Owner: {{ props.row.client_name }} {{ props.row.client_lastname }} </p>
+              <p>Description: {{ props.row.long_description }} </p>
+              <p>Pet: {{ props.row.pet_name }}</p>
+              <p>Animal: {{ props.row.species }}, {{props.row.breed_name}}</p>
+              <p>Diagnosis: {{ props.row.diagnosis }}</p>
+              <p>Vet: {{ props.row.staff_name }} {{ props.row.staff_lastname }}</p>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Time"
+          prop="date">
+        </el-table-column>
+        <el-table-column
+          label="Client"
+          prop="client_name">
+        </el-table-column>
+        <el-table-column
+          label="Preview"
+          prop="short_description">
+        </el-table-column>
+      </el-table>
+    </el-main>
+  </div>
 </template>
 <style>
+  .el-table__empty-text{
+    display: none;
+  }
   .el-header {
     background-color: #B3C0D1;
     color: #333;
@@ -57,28 +49,23 @@
 
 <script>
 const axios = require('axios')
-
 export default {
   data () {
     return {
-      clients: []
-    }
-  },
-  methods: {
-    handleEdit (index, row) {
-      console.log(index, row)
-    },
-    handleDelete (index, row) {
-      console.log(index, row)
+      visits: []
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/clients/')
+    axios.get('http://localhost:8080/visits/')
       .then((response) => {
         console.log(response.data)
-        this.clients = response.data
+        this.visits = response.data
       })
+  },
+  methods: {
+
   }
+
 }
 </script>
 

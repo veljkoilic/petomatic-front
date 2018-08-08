@@ -33,6 +33,9 @@
   </div>
 </template>
 <style>
+  .el-table__empty-text{
+    display: none;
+  }
   .el-header {
     background-color: #B3C0D1;
     color: #333;
@@ -53,7 +56,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/visits/')
+    axios.get('http://localhost:8080/visits/today')
       .then((response) => {
         console.log(response.data)
         this.visits = response.data

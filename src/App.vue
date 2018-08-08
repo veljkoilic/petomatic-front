@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <el-container style="height: 100vh; border: 1px solid #eee">
+    <el-container style="min-height: 100vh; border: 1px solid #eee">
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
         <el-menu :default-openeds="['0']">
           <router-link to="/"><el-menu-item index="1-1">Home</el-menu-item></router-link>
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-message"></i>Clients</template>
             <el-menu-item-group>
-              <el-menu-item index="1-1">Create new client</el-menu-item>
+              <router-link to="/create-client"><el-menu-item index="1-1">Create new client</el-menu-item></router-link>
               <router-link to="/view-clients"><el-menu-item index="1-2">View all clients</el-menu-item></router-link>
               <el-menu-item index="1-2">Add a pet</el-menu-item>
             </el-menu-item-group>
@@ -16,9 +16,10 @@
             <template slot="title"><i class="el-icon-menu"></i>Visits</template>
             <el-menu-item-group>
               <el-menu-item index="2-1">Create a visit</el-menu-item>
-              <el-menu-item index="2-2">View all visits</el-menu-item>
+              <router-link to="/all-visits"><el-menu-item index="2-2">View all visits</el-menu-item></router-link>
             </el-menu-item-group>
           </el-submenu>
+          <router-link to="/add-breed"><el-menu-item index="1-1">Add breed</el-menu-item></router-link>
         </el-menu>
       </el-aside>
 
@@ -34,7 +35,7 @@
               <el-dropdown-item @click="logout">Log out</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>Todays View</span>
+          <span>Quick options</span>
         </el-header>
         <router-view></router-view>
       </el-container>

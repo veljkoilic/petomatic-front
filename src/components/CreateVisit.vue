@@ -44,8 +44,6 @@
 </style>
 
 <script>
-const axios = require('axios')
-
 export default {
   data () {
     return {
@@ -66,27 +64,23 @@ export default {
   },
   methods: {
     onSubmit () {
-      axios.post('http://localhost:8080/visits/', this.visit)
+      this.axios.post('http://localhost:8080/visits/', this.visit)
         .then((response) => {
-          console.log(response)
         })
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/clients/')
+    this.axios.get('http://localhost:8080/clients/')
       .then((response) => {
         this.clients = response.data
-        console.log(this.clients)
       })
-    axios.get('http://localhost:8080/pets/')
+    this.axios.get('http://localhost:8080/pets/')
       .then((response) => {
         this.pets = response.data
-        console.log(this.pets)
       })
-    axios.get('http://localhost:8080/types/')
+    this.axios.get('http://localhost:8080/types/')
       .then((response) => {
         this.types = response.data
-        console.log(this.types)
       })
   }
 }

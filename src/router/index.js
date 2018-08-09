@@ -7,10 +7,12 @@ import ViewClients from '@/components/ViewClients'
 import Client from '@/components/Client'
 import Pet from '@/components/Pet'
 import CreateUser from '@/components/CreateUser'
-import addPet from '@/components/addPet'
 import EditClient from '@/components/EditClient'
 import EditPet from '@/components/EditPet'
 import CreateVisit from '@/components/CreateVisit'
+import EditVisits from '@/components/EditVisits'
+import AddBreed from '@/components/AddBreed'
+import AddType from '@/components/AddType'
 
 Vue.use(Router)
 export default new Router({
@@ -52,11 +54,6 @@ export default new Router({
       component: CreateUser
     },
     {
-      path: '/add-pet',
-      name: 'addPet',
-      component: addPet
-    },
-    {
       path: '/edit-client/:clientId',
       name: 'EditClient',
       component: EditClient
@@ -70,6 +67,21 @@ export default new Router({
       path: '/create-visit',
       name: 'CreateVisit',
       component: CreateVisit
+    },
+    {
+      path: '/edit-visits',
+      name: 'EditVisits',
+      component: EditVisits
+    },
+    {
+      path: '/add-breed',
+      name: 'AddBreed',
+      component: AddBreed
+    },
+    {
+      path: '/add-type',
+      name: 'AddType',
+      component: AddType
     }
   ]
 })

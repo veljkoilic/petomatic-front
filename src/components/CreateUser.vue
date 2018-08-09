@@ -17,7 +17,7 @@
     </el-row>
     <el-row>
       <el-col :span="6" :offset="9">
-        <h5>Client photo:</h5>
+        <h4>Client photo:</h4>
         <input type="file">
       </el-col>
     </el-row>
@@ -37,7 +37,6 @@
   }
 </style>
 <script>
-const axios = require('axios')
 export default {
   data () {
     return {
@@ -58,17 +57,14 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/breeds')
+    this.axios.get('http://localhost:8080/breeds')
       .then((response) => {
         this.gbreeds = response.data
       })
   },
   methods: {
     createClient () {
-      axios.post('http://localhost:8080/clients', this.client)
-        .then((response) => {
-          console.log(response.data)
-        })
+      this.axios.post('http://localhost:8080/clients', this.client)
     }
   }
 }

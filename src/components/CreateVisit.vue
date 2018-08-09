@@ -65,8 +65,6 @@ export default {
   methods: {
     onSubmit () {
       this.axios.post('http://localhost:8080/visits/', this.visit)
-        .then((response) => {
-        })
     }
   },
   mounted () {

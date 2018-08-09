@@ -1,21 +1,12 @@
-# petomatic-front
+# Peterinar App
 
-> Veterinarian Clinic app done with Vue.js and PHP
+> Veterinarian Clinic app Front-end done with Vue.js lets you create read and update clients, their pets and lets you control the visits to the clinic. The interface was created using Element.io while Axios was used to handle requests.
 
 ## Build Setup
 
-``` bash
-# install dependencies
-npm install
+ First you need to install the project dependencies using 
+`npm install`
 
-# serve with hot reload at localhost:8080
-npm run dev
+Compile the app frontend and serve using `npm run dev`
 
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+>Made by Veljko Ilic 2018.

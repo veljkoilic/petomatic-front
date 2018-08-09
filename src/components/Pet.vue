@@ -7,7 +7,7 @@
       </el-row>
     <el-row>
       <el-col :span="10">
-        <h2>{{pet.pet_name}}, {{pet.species}} - {{pet.breed}}</h2>
+        <h2>{{pet.pet_name}}, {{pet.species}} </h2>
       </el-col>
     </el-row>
     <el-row>
@@ -56,6 +56,7 @@ export default {
   data () {
     return {
       pet: [],
+      newPet: [],
       visits: []
     }
   },

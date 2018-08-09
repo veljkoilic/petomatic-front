@@ -1,38 +1,48 @@
 <template>
   <div>
+      <el-row>
+        <el-col :span="6">
+          <img :src="newPet.pet_photo" alt="">
+        </el-col>
+      </el-row>
     <el-row>
-      <el-button @click="saveChanges" type="success">Save changes</el-button>
       <el-col :span="10">
-        <h5>{{clients.client_name + " " + clients.client_lastname}}</h5>
-          <el-button type="button" @click="editName">Edit name</el-button>
-          <el-button type="button" @click="editLastName">Edit lastname</el-button>
+        <h2>{{newPet.pet_name}}, {{newPet.species}} </h2>
       </el-col>
     </el-row>
     <el-row>
-      <el-row>
-        <el-col :span="6">
-          <img :src="clients.client_photo" alt="">
-        </el-col>
-      </el-row>
-      <h3>Pets:</h3>
-      <el-col :span="8" v-for="pet in pets" :key="pet.id" :offset="2">
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="pet.pet_photo" class="image">
-          <div style="padding: 14px;">
-            <span>{{pet.pet_name}}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ pet.species }}, {{pet.breed_name}}</time>
-              <router-link :to="'/edit-pet/'+ pet.id"><el-button type="text" class="button">Edit</el-button></router-link>
+      <el-table
+        :data="visits"
+        style="width: 100%">
+        <el-table-column type="expand">
+          <template  slot-scope="props" >
+            <div>
+              <p>Diagnosis: {{ props.row.diagnosis }}</p>
+              <p>Description: {{ props.row.long_description }}</p>
+              <p>Examination photo:</p>
+              <img :src="props.row.photo" alt="">
             </div>
-          </div>
-        </el-card>
-      </el-col>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Date"
+          prop="date">
+        </el-table-column>
+        <el-table-column
+          label="Diagnosis"
+          prop="diagnosis">
+        </el-table-column>
+        <el-table-column
+          label="Preview"
+          prop="short_description">
+        </el-table-column>
+      </el-table>
     </el-row>
     <el-row>
       <el-col>
-        <el-button type="primary" @click="dialogFormVisible = true">Add pet</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">Edit pet</el-button>
 
-        <el-dialog title="Shipping address" :visible.sync="dialogFormVisible">
+        <el-dialog title="Edit pet" :visible.sync="dialogFormVisible">
           <el-form :model="newPet">
             <el-form-item label="Pet name" :label-width="formLabelWidth">
               <el-input v-model="newPet.pet_name" auto-complete="off"></el-input>
@@ -51,7 +61,7 @@
           </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="addPet()">Confirm</el-button>
+            <el-button type="primary" @click="editPet()">Confirm</el-button>
            </span>
         </el-dialog>
 
@@ -66,39 +76,6 @@ img{
   background: red;
   margin: 50px 0 50px 150px;
 }
-  h5{
-    font-size: 50px;
-  }
-.time {
-  font-size: 13px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
-
-.button {
-  padding: 0;
-  float: right;
-}
-
-.image {
-  width: 300px;
-  display: block;
-  margin: 0 auto;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-
-.clearfix:after {
-  clear: both
-}
 </style>
 
 <script>
@@ -107,14 +84,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      clients: [],
-      pets: [],
+
       gbreeds: [],
-      newClient: {
-        client_name: '',
-        client_lastname: '',
-        client_photo: ''
-      },
       newPet: {
         pet_name: '',
         species: '',
@@ -124,75 +95,31 @@ export default {
       },
       dialogTableVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      visits: []
     }
   },
   methods: {
-    editName () {
-      this.$prompt('Please input clients name', 'Name', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        inputPattern: '',
-        inputErrorMessage: 'Invalid Email'
-      }).then(value => {
-        this.newClient.client_name = value.value
-        this.$message({
-          type: 'success',
-          message: 'Clients name is now:' + value.value
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: 'Input canceled'
-        })
-      })
-    },
-    editLastName () {
-      this.$prompt('Please input clients lastname', 'Lastname', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        inputPattern: '',
-        inputErrorMessage: 'Invalid Email'
-      }).then(value => {
-        this.newClient.client_lastname = value.value
-        this.$message({
-          type: 'success',
-          message: 'Clients lastname is now:' + value.value
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: 'Input canceled'
-        })
-      })
-    },
-    addPet () {
-      axios.post('http://localhost:8080/pets/', this.newPet)
+    editPet () {
+      axios.post('http://localhost:8080/pets/' + this.$route.params.petId, this.newPet)
         .then((response) => {
           console.log(response.data)
         })
       this.dialogFormVisible = false
       console.log(this.newPet)
-    },
-    saveChanges () {
-      axios.post('http://localhost:8080/clients/' + this.$route.params.clientId, this.newClient)
-        .then((response) => {
-          console.log(response.data)
-        })
     }
   },
   mounted () {
-    axios.get('http://localhost:8080/clients/' + this.$route.params.clientId)
+    axios.get('http://localhost:8080/pets/' + this.$route.params.petId)
       .then((response) => {
         console.log(response.data)
-        this.clients = response.data
-        this.newClient = response.data
+        this.pet = response.data
+        this.newPet = response.data
       })
-    axios.get('http://localhost:8080/client/pets/' + this.$route.params.clientId)
+    axios.get('http://localhost:8080/pet/visits/' + this.$route.params.petId)
       .then((response) => {
         console.log(response.data)
-        this.pets = response.data
-        this.newPet.clients_id = this.$route.params.clientId
+        this.visits = response.data
       })
     axios.get('http://localhost:8080/breeds')
       .then((response) => {

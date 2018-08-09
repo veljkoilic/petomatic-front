@@ -9,6 +9,8 @@ import Pet from '@/components/Pet'
 import CreateUser from '@/components/CreateUser'
 import addPet from '@/components/addPet'
 import EditClient from '@/components/EditClient'
+import EditPet from '@/components/EditPet'
+import CreateVisit from '@/components/CreateVisit'
 
 Vue.use(Router)
 export default new Router({
@@ -58,6 +60,16 @@ export default new Router({
       path: '/edit-client/:clientId',
       name: 'EditClient',
       component: EditClient
+    },
+    {
+      path: '/edit-pet/:petId',
+      name: 'EditPet',
+      component: EditPet
+    },
+    {
+      path: '/create-visit',
+      name: 'CreateVisit',
+      component: CreateVisit
     }
   ]
 })
